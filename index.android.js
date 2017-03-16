@@ -39,4 +39,25 @@ Object.keys(FingerPrintNative).forEach((k) => {
   FingerPrintAndroid[k] = FingerPrintNative[k];
 });
 
+FingerPrintAndroid.authenticate = () => {
+  return FingerPrintNative.authenticate()
+  .catch((error) => {
+    throw new AuthError(e.message_alias, e.message);
+  });
+};
+
+FingerPrintAndroid.cancelAuthentication = FingerPrintNative.cancelAuthentication;
+FingerPrintAndroid.isHardwareDetected = FingerPrintNative.isHardwareDetected;
+FingerPrintAndroid.hasEnrolledFingerprints = FingerPrintNative.hasEnrolledFingerprints;
+FingerPrintAndroid.hasPermission = FingerPrintNative.hasPermission;
+
+class AuthError extends Error {
+  constructor(alias, message) {
+    super();
+    this.type = 'ERROR';
+    this.message_alias = alias;
+    this.message = message;
+  }
+}
+
 export default FingerPrintAndroid;
