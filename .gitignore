@@ -1,3 +1,4 @@
 android/build
 .gradle
 .nvimrc
+npm-debug.log
