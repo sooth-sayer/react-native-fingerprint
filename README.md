@@ -64,3 +64,6 @@ import com.facebook.react.ReactApplication;
             );
         }
 ```
+
+# TODO
+Improve docs, add example
