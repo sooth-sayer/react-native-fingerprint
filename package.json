@@ -1,0 +1,24 @@
+{
+  "name": "react-native-fingerprint",
+  "version": "1.0.0",
+  "description": "React native android fingerprint",
+  "main": "index.android.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sooth-sayer/react-native-fingerprint.git"
+  },
+  "keywords": [
+    "fingerprint",
+    "android",
+    "react-native"
+  ],
+  "author": "Dmitry Chernyatiev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sooth-sayer/react-native-fingerprint/issues"
+  },
+  "homepage": "https://github.com/sooth-sayer/react-native-fingerprint#readme"
+}
