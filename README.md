@@ -1,23 +1,23 @@
-#react-native-fingerprint
+# react-native-fingerprint
 
 Fingerprint android auth for react-native (android only).
 
-##API
+## API
 
-####`.authenticate():Promise<null>`
+#### `.authenticate():Promise<null>`
 Starts authentication.
 Returns a Promise.
 
-####`.hasPermission(): Promise<boolean>`
+#### `.hasPermission(): Promise<boolean>`
 Will check if `android.permission.USE_FINGERPRINT` is granted to this app.
 
-####`hasEnrolledFingerprints(): Promise<boolean>`
+#### `hasEnrolledFingerprints(): Promise<boolean>`
 Determine if there is at least one fingerprint enrolled.
 
-####`isHardwareDetected(): Promise<boolean>`
+#### `isHardwareDetected(): Promise<boolean>`
 Determine if fingerprint hardware is present and functional.
 
-##Installation
+## Installation
 `npm i react-native-fingerprint --save`
 
 Don't forget to add the permission to your manifest:
@@ -27,10 +27,10 @@ Don't forget to add the permission to your manifest:
  <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example">
 +    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
  ```
-###Automatic installation
+### Automatic installation
 Run `react-native link` after npm install.
 
-###Manual installation
+### Manual installation
 
 `android/app/build.gradle`
 ```diff
