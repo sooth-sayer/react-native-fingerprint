@@ -50,7 +50,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
   }
 
   CancellationSignal cancellationSignal;
-  boolean isCancelled = false;
+  static int currentCbId = 0;
 
   public FingerPrintModule(ReactApplicationContext reactContext) {
     super(reactContext);
@@ -106,15 +106,14 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void authenticate(final Promise promise) {
-    Log.d(TAG, "authenticate");
+    Log.d(TAG, "Authenticate");
     try {
-      isCancelled = false;
       cancellationSignal = new CancellationSignal();
       getFpManager().authenticate(
         null,
         0,
         cancellationSignal,
-        new AuthCallback(promise),
+        new AuthCallback(promise, ++currentCbId),
         null
       );
     } catch (Exception ex) {
@@ -124,11 +123,14 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
 
   @ReactMethod
   public void cancelAuthentication(Promise promise) {
+    Log.d(TAG, "Cancel request");
+    if (cancellationSignal.isCanceled()) {
+      Log.w(TAG, "Already canceled, skip it");
+      return;
+    }
+
     try {
-      if(!isCancelled) {
-        cancellationSignal.cancel();
-        isCancelled = true;
-      }
+      cancellationSignal.cancel();
       promise.resolve(null);
     } catch(Exception e) {
       promise.reject(e);
@@ -143,36 +145,38 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
 
   private class AuthCallback extends FingerprintManagerCompat.AuthenticationCallback {
     private Promise promise;
+    private int id;
 
-    public AuthCallback(Promise promise) {
+    public AuthCallback(Promise promise, int id) {
       this.promise = promise;
+      this.id = id;
     }
 
     @Override
     public void onAuthenticationError(int errMsgId, CharSequence errString) {
       super.onAuthenticationError(errMsgId, errString);
-      Log.d(TAG, "Fingerprint auth error: " + errString);
+      Log.e(TAG, "Fingerprint auth error: " + "(cb id: " + id + "), " + errString);
       rejectWithError(errMsgId, errString.toString());
     }
 
     @Override
     public void onAuthenticationFailed() {
       super.onAuthenticationFailed();
-      Log.d(TAG, "Fingerprint auth failed");
+      Log.w(TAG, "Fingerprint auth failed " + "(cb id: " + id + ")");
       sendFailedMessage();
     }
 
     @Override
     public void onAuthenticationHelp(int helpMsg, CharSequence helpString) {
       super.onAuthenticationHelp(helpMsg, helpString);
-      Log.d(TAG, "Fingerprint auth acquire help: " + helpString);
+      Log.i(TAG, "Fingerprint auth acquire help: " + "(cb id: " + id + "), " + helpString);
       sendAcquireMessage(helpMsg, helpString.toString());
     }
 
     @Override
     public void onAuthenticationSucceeded(FingerprintManagerCompat.AuthenticationResult result) {
       super.onAuthenticationSucceeded(result);
-      Log.d(TAG, "Fingerprint auth success");
+      Log.d(TAG, "Fingerprint auth success " + "(cb id: " + id + ")");
       promise.resolve(true);
     }
 

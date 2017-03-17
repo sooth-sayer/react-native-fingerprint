@@ -42,7 +42,7 @@ Object.keys(FingerPrintNative).forEach((k) => {
 FingerPrintAndroid.authenticate = () => {
   return FingerPrintNative.authenticate()
   .catch((error) => {
-    throw new AuthError(e.message_alias, e.message);
+    throw new AuthError(error.code, error.message);
   });
 };
 
