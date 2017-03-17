@@ -146,6 +146,7 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
   private class AuthCallback extends FingerprintManagerCompat.AuthenticationCallback {
     private Promise promise;
     private int id;
+    private boolean finished;
 
     public AuthCallback(Promise promise, int id) {
       this.promise = promise;
@@ -156,7 +157,14 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
     public void onAuthenticationError(int errMsgId, CharSequence errString) {
       super.onAuthenticationError(errMsgId, errString);
       Log.e(TAG, "Fingerprint auth error: " + "(cb id: " + id + "), " + errString);
+      if (finished) {
+        Log.w(TAG, "Already finished, skip it");
+        Log.w(TAG, "Should not be called according to android FingerPrintCompat doc :(");
+        return;
+      }
+
       rejectWithError(errMsgId, errString.toString());
+      finished = true;
     }
 
     @Override
