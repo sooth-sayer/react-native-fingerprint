@@ -124,6 +124,11 @@ public class FingerPrintModule extends ReactContextBaseJavaModule {
   @ReactMethod
   public void cancelAuthentication(Promise promise) {
     Log.d(TAG, "Cancel request");
+    if (cancellationSignal == null) {
+      Log.w(TAG, "There is nothing to cancel!");
+      return;
+    }
+
     if (cancellationSignal.isCanceled()) {
       Log.w(TAG, "Already canceled, skip it");
       return;
