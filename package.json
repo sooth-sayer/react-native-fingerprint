@@ -1,6 +1,6 @@
 {
   "name": "react-native-fingerprint",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "React native android fingerprint",
   "main": "index.android.js",
   "scripts": {
@@ -9,6 +9,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sooth-sayer/react-native-fingerprint.git"
+  },
+  "peerDependencies": {
+    "fbjs": "^0.8.9"
   },
   "keywords": [
     "fingerprint",
